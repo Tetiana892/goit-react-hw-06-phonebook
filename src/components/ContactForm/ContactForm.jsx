@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
+// import PropTypes from 'prop-types';
 import {
   FormContainer,
   InputContainer,
@@ -8,32 +8,29 @@ import {
   Input,
   Button,
 } from './ContactForm.styled';
+import { useDispatch, useSelector } from 'react-redux';
+import { getContacts, addContact } from 'redux/contactsSlice';
 
 function ContactForm({ onSubmit }) {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
-  const nameInputId = nanoid();
-  const numberInputId = nanoid();
+  const contacts = useSelector(getContacts);
+  const dispatch = useDispatch();
 
-  const handleInputChange = event => {
-    const { name, value } = event.currentTarget;
-
-    switch (name) {
-      case 'name':
-        setName(value);
-        break;
-      case 'number':
-        setNumber(value);
-        break;
-      default:
-        return;
-    }
-  };
+  const changeName = e => setName(e.target.value);
+  const changeNumber = e => setNumber(e.target.value);
 
   const handleSubmit = e => {
     e.preventDefault();
-    onSubmit({ name, number });
+    const newContact = {
+      name,
+      number,
+      id: nanoid(),
+    };
+    contacts.find(contact => contact.name.toLowerCase() === name.toLowerCase())
+      ? alert(`${name} is already in contacts`)
+      : dispatch(addContact(newContact));
     reset();
   };
 
@@ -45,7 +42,7 @@ function ContactForm({ onSubmit }) {
   return (
     <FormContainer onSubmit={handleSubmit}>
       <InputContainer>
-        <LabelInput htmlFor={nameInputId}>
+        <LabelInput>
           Name
           <Input
             type="text"
@@ -54,13 +51,12 @@ function ContactForm({ onSubmit }) {
             title="Name may contain only letters, apostrophe, dash and spaces. For example Adrian, Jacob Mercer, Charles de Batz de Castelmore d'Artagnan"
             required
             value={name}
-            onChange={handleInputChange}
-            id={nameInputId}
+            onChange={changeName}
             placeholder="Name"
           />
         </LabelInput>
 
-        <LabelInput htmlFor={numberInputId}>
+        <LabelInput>
           Number
           <Input
             type="tel"
@@ -69,8 +65,7 @@ function ContactForm({ onSubmit }) {
             title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
             required
             value={number}
-            onChange={handleInputChange}
-            id={numberInputId}
+            onChange={changeNumber}
             placeholder="+0-00-00-00"
           />
         </LabelInput>
@@ -81,8 +76,8 @@ function ContactForm({ onSubmit }) {
   );
 }
 
-ContactForm.propTypes = {
-  handleSubmit: PropTypes.func,
-};
+// ContactForm.propTypes = {
+//   handleSubmit: PropTypes.func,
+// };
 
 export default ContactForm;
