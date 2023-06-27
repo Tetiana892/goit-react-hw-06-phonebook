@@ -1,5 +1,5 @@
 import { useDispatch, useSelector } from 'react-redux';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import { FilterContainer, Input, Text } from './Filter.styled';
 import { changeFilter, getFilter } from 'redux/contactsSlice.js';
 
@@ -22,9 +22,9 @@ const Filter = () => {
   );
 };
 
-// Filter.propTypes = {
-//   value: PropTypes.string,
-//   onChange: PropTypes.func.isRequired,
-// };
+Filter.propTypes = {
+  value: PropTypes.string,
+  onChange: PropTypes.func,
+};
 
 export default Filter;

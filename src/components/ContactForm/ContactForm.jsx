@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { nanoid } from 'nanoid';
-// import PropTypes from 'prop-types';
+import PropTypes from 'prop-types';
 import {
   FormContainer,
   InputContainer,
@@ -11,7 +11,7 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, addContact } from 'redux/contactsSlice';
 
-function ContactForm({ onSubmit }) {
+function ContactForm() {
   const [name, setName] = useState('');
   const [number, setNumber] = useState('');
 
@@ -76,8 +76,8 @@ function ContactForm({ onSubmit }) {
   );
 }
 
-// ContactForm.propTypes = {
-//   handleSubmit: PropTypes.func,
-// };
+ContactForm.propTypes = {
+  handleSubmit: PropTypes.func,
+};
 
 export default ContactForm;
